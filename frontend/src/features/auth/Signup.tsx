@@ -13,7 +13,9 @@ export default function Signup() {
     e.preventDefault();
     try {
       await signup({ email, password }).unwrap();
-      navigate('/tickets');
+      setTimeout(() => {
+        navigate('/tickets');
+      }, 1500);
     } catch (_) {}
   };
 
