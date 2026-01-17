@@ -1,0 +1,27 @@
+package com.prod.backend.customersupport.ticket;
+
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/admin")
+@SecurityRequirement(name = "bearerAuth")
+public class AdminTicketController {
+
+    private final TicketService ticketService;
+
+    @GetMapping("/tickets")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<TicketResponseForAdmin>> getAllTickets() {
+        return ResponseEntity.ok(ticketService.getAllTickets());
+    }
+}
+
