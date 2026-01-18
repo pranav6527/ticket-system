@@ -13,9 +13,7 @@ export default function Signup() {
     e.preventDefault();
     try {
       await signup({ email, password }).unwrap();
-      setTimeout(() => {
-        navigate('/tickets');
-      }, 1500);
+      navigate('/tickets');
     } catch (_) {}
   };
 

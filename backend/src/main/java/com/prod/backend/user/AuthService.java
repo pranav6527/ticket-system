@@ -18,7 +18,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenService refreshTokenService;
 
-    public AuthResponse signup(SignupRequest request,HttpServletResponse response) {
+    public void signup(SignupRequest request) {
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new RuntimeException("Email already exists");
@@ -30,18 +30,6 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.USER);
         userRepository.save(user);
-        String accessToken = jwtUtility.generateToken(user);
-
-        RefreshTokenEntity refreshToken =
-                refreshTokenService.create(user);
-
-        response.addHeader(
-                HttpHeaders.SET_COOKIE,
-                refreshTokenService.buildCookie(refreshToken.getToken()).toString()
-        );
-
-        return new AuthResponse(accessToken);
-
     }
 
 
