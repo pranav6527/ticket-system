@@ -46,3 +46,9 @@ frontend/dist/
 # TEST / COVERAGE
 # ======================
 coverage/
+
+# ======================
+# tar files
+# ======================
+*.tar
+
