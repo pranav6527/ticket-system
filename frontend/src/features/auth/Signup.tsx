@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSignupMutation } from './authApi';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -9,7 +9,6 @@ import {
   Lock,
   Loader2,
   Check,
-  X,
   AlertCircle,
 } from 'lucide-react';
 
