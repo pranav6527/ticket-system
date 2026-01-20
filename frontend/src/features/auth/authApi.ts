@@ -1,5 +1,5 @@
 import { baseApi } from '../../app/baseApi';
-import { setToken } from './authSlice';
+import { logout, setToken } from './authSlice';
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -26,7 +26,19 @@ export const authApi = baseApi.injectEndpoints({
         dispatch(setToken(data.accessToken));
       },
     }),
+
+    logout: builder.mutation<void, void>({
+      query: () => ({
+        url: '/auth/logout',
+        method: 'POST',
+      }),
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        await queryFulfilled;
+        dispatch(logout());
+      },
+    }),
   }),
 });
 
-export const { useLoginMutation, useSignupMutation } = authApi;
+export const { useLoginMutation, useSignupMutation, useLogoutMutation } =
+  authApi;
