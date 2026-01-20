@@ -61,7 +61,7 @@ export default function Login() {
             <LogIn className="h-8 w-8 text-blue-600" />
           </div>
           <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900">
-            Welcome Back
+            Welcome
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Please sign in to your account
