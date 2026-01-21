@@ -1,7 +1,7 @@
 package com.prod.backend.security;
 
-import com.prod.backend.user.UserEntity;
-import com.prod.backend.user.UserRepository;
+import com.prod.backend.entity.UserEntity;
+import com.prod.backend.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
