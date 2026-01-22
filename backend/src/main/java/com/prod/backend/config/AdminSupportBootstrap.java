@@ -15,19 +15,14 @@ public class AdminSupportBootstrap {
 
     private final UserRepository repo;
     private final PasswordEncoder encoder;
-
-    @Value("${admin.email}")
-    private final String adminMail;
-
-    @Value("${admin.password}")
-    private final String adminPassword;
+    private final AdminProperties superAdmin;
 
     @PostConstruct
     public void init() {
-        if (repo.findByEmail(adminMail).isEmpty()) {
+        if (repo.findByEmail(superAdmin.email()).isEmpty()) {
             UserEntity admin = new UserEntity();
-            admin.setEmail(adminMail);
-            admin.setPassword(encoder.encode(adminPassword));
+            admin.setEmail(superAdmin.email());
+            admin.setPassword(encoder.encode(superAdmin.password()));
             admin.setRole(Role.ADMIN);
             repo.save(admin);
         }

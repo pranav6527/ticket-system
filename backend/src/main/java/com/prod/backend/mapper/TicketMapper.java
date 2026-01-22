@@ -27,7 +27,5 @@ public interface TicketMapper {
 
     // Admin Response mapping with nested data
     @Mapping(target = "userEmail", source = "user.email")
-    @Mapping(target = "createdAt", expression = "java(ticketEntity.getCreatedAt().toString())")
-    @Mapping(target = "updatedAt", expression = "java(ticketEntity.getUpdatedAt().toString())")
     TicketResponseForAdmin toDtoForAdmin(TicketEntity ticketEntity);
 }

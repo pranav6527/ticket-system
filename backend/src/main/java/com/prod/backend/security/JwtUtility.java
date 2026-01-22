@@ -1,5 +1,6 @@
 package com.prod.backend.security;
 
+import com.prod.backend.config.JwtProperties;
 import com.prod.backend.entity.UserEntity;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -13,11 +14,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtUtility {
 
-    @Value("${jwt.secret}")
-    private String secret;
-
-    @Value("${jwt.expiration}")
-    private long expiration;
+    private final JwtProperties jwtProperties;
 
 
     public String generateToken(UserEntity user) {
@@ -25,14 +22,14 @@ public class JwtUtility {
                 .setSubject(user.getEmail())
                 .claim("role", user.getRole().name())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtProperties.expiration()))
+                .signWith(Keys.hmacShaKeyFor(jwtProperties.secret().getBytes()))
                 .compact();
     }
 
     public String extractEmail(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(secret.getBytes())
+                .setSigningKey(jwtProperties.secret().getBytes())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
