@@ -25,7 +25,7 @@ public class TicketMapper {
     public static TicketResponse toDto(TicketEntity ticketEntity) {
         TicketResponse ticketResponse = new TicketResponse();
         ticketResponse.setSubject(ticketEntity.getSubject());
-        ticketResponse.setStatus(ticketResponse.getStatus());
+        ticketResponse.setStatus(ticketEntity.getStatus());
         ticketResponse.setDescription(ticketEntity.getDescription());
         return ticketResponse;
     }
@@ -34,7 +34,7 @@ public class TicketMapper {
         TicketResponseForAdmin ticketResponseForAdmin = new TicketResponseForAdmin();
         ticketResponseForAdmin.setUserEmail(ticketEntity.getUser().getEmail());
         ticketResponseForAdmin.setSubject(ticketEntity.getSubject());
-        ticketResponseForAdmin.setStatus(ticketResponseForAdmin.getStatus());
+        ticketResponseForAdmin.setStatus(ticketEntity.getStatus());
         ticketResponseForAdmin.setDescription(ticketEntity.getDescription());
         ticketResponseForAdmin.setCreatedAt(ticketEntity.getCreatedAt().toString());
         ticketResponseForAdmin.setUpdatedAt(ticketEntity.getUpdatedAt().toString());

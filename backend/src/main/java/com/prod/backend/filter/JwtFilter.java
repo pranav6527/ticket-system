@@ -1,6 +1,6 @@
 package com.prod.backend.filter;
 
-import com.prod.backend.security.CustomeUserDetailsService;
+import com.prod.backend.security.CustomUserDetailsService;
 import com.prod.backend.security.JwtUtility;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -21,7 +21,7 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtility jwtUtility;
-    private final CustomeUserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {

@@ -26,7 +26,7 @@ public class AuthService {
     public AuthResponse signup(SignupRequest request, HttpServletResponse response) {
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already exists");
+            throw new RuntimeException("We could not create this account. Try signing in instead.");
         }
 
 
