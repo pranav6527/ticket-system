@@ -1,5 +1,6 @@
 package com.prod.backend.service;
 
+import com.prod.backend.config.JwtProperties;
 import com.prod.backend.entity.RefreshTokenEntity;
 import com.prod.backend.entity.UserEntity;
 import com.prod.backend.repo.RefreshTokenRepository;
@@ -18,9 +19,7 @@ import java.util.UUID;
 public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
-
-    @Value("${jwt.refresh.expiration}")
-    private long refreshTokenDurationMs;
+    private final JwtProperties jwtProperties;
 
     private boolean isProd() {
         return "prod".equals(System.getProperty("spring.profiles.active"));
@@ -35,7 +34,7 @@ public class RefreshTokenService {
         RefreshTokenEntity token = new RefreshTokenEntity();
         token.setUser(user);
         token.setToken(UUID.randomUUID().toString());
-        token.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
+        token.setExpiryDate(Instant.now().plusMillis(jwtProperties.refresh().expiration()));
 
         return refreshTokenRepository.save(token);
     }
@@ -67,7 +66,7 @@ public class RefreshTokenService {
         RefreshTokenEntity newToken = new RefreshTokenEntity();
         newToken.setUser(oldToken.getUser());
         newToken.setToken(UUID.randomUUID().toString());
-        newToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
+        newToken.setExpiryDate(Instant.now().plusMillis(jwtProperties.refresh().expiration()));
 
         return refreshTokenRepository.save(newToken);
     }
@@ -91,7 +90,7 @@ public class RefreshTokenService {
                 .secure(isProd())
                 .sameSite(isProd() ? "None" : "Lax")
                 .path("/") // dev + prod safe
-                .maxAge(Duration.ofMillis(refreshTokenDurationMs))
+                .maxAge(Duration.ofMillis(jwtProperties.refresh().expiration()))
                 .build();
     }
 

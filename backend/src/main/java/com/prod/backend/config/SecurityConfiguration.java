@@ -23,9 +23,6 @@ public class SecurityConfiguration {
 
     private final JwtFilter jwtFilter;
 
-    @Value("${jwt.secret}")
-    private String secret;
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -63,10 +60,4 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    @PostConstruct
-    void validateJwt() {
-        if ("__build_only__".equals(secret)) {
-            throw new IllegalStateException("JWT_SECRET must be provided at runtime");
-        }
-    }
 }

@@ -3,9 +3,4 @@ package com.prod.backend.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-public class CreateTicketRequest {
-    private String subject;
-    private String description;
-}
+public record CreateTicketRequest(String subject, String description) {}

@@ -4,10 +4,4 @@ import com.prod.backend.enums.Status;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-public class TicketResponse {
-    private String subject;
-    private Status status;
-    private String description;
-}
+public record TicketResponse(String subject, Status status, String description) {}

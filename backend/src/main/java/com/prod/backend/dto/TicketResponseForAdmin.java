@@ -4,13 +4,11 @@ import com.prod.backend.enums.Status;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-public class TicketResponseForAdmin {
-    private String userEmail;
-    private String subject;
-    private Status status;
-    private String description;
-    private String createdAt;
-    private String updatedAt;
-}
+public record TicketResponseForAdmin(
+        String userEmail,
+        String subject,
+        Status status,
+        String description,
+        String createdAt,
+        String updatedAt
+) {}

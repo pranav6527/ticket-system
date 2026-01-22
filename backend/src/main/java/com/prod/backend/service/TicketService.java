@@ -20,21 +20,22 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
+    private final TicketMapper ticketMapper;
 
     public TicketResponse createTicket(CreateTicketRequest createTicketRequest, Long loggedInUserId) {
         UserEntity user = userRepository.findById(loggedInUserId).orElseThrow(() -> new RuntimeException("User not found"));
-        TicketEntity ticketEntity = TicketMapper.toEntity(createTicketRequest, user);
+        TicketEntity ticketEntity = ticketMapper.toEntity(createTicketRequest, user);
         TicketEntity saved = ticketRepository.save(ticketEntity);
-        return TicketMapper.toDto(saved);
+        return ticketMapper.toDto(saved);
     }
 
     public List<TicketResponse> getTickets(Long loggedInUserId) {
         List<TicketEntity> tickets = ticketRepository.findByUser_Id(loggedInUserId);
-        return tickets.stream().map(TicketMapper::toDto).collect(Collectors.toList());
+        return tickets.stream().map(ticketMapper::toDto).collect(Collectors.toList());
     }
 
     public List<TicketResponseForAdmin> getAllTickets() {
         List<TicketEntity> tickets = ticketRepository.findAll();
-        return tickets.stream().map(TicketMapper::toDtoForAdmin).collect(Collectors.toList());
+        return tickets.stream().map(ticketMapper::toDtoForAdmin).collect(Collectors.toList());
     }
 }
