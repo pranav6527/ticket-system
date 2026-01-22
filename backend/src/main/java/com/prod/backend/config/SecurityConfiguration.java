@@ -22,7 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration {
 
     private final JwtFilter jwtFilter;
-    private final JwtProperties jwtProperties;
 
 
     @Bean
@@ -61,10 +60,4 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    @PostConstruct
-    void validateJwt() {
-        if ("__build_only__".equals(jwtProperties.secret())) {
-            throw new IllegalStateException("JWT_SECRET must be provided at runtime");
-        }
-    }
 }
