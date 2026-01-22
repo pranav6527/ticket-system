@@ -1,6 +1,6 @@
 package com.prod.backend.security;
 
-import com.prod.backend.user.UserEntity;
+import com.prod.backend.entity.UserEntity;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
