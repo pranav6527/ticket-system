@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useGetTicketsQuery, useCreateTicketMutation } from './ticketsApi';
+import {
+  useGetTicketsQuery,
+  useCreateTicketMutation,
+  type Ticket,
+} from './ticketsApi';
 import { useLogoutMutation } from '../auth/authApi';
-import { nanoid } from 'nanoid';
 import { LogOut } from 'lucide-react'; // Added Lucide icon import
 import { useAppSelector } from '../../app/hooks';
 import { getJwtPayload } from '../auth/jwt';
@@ -105,9 +108,9 @@ export default function TicketsList() {
             <p className="text-center text-gray-500">No tickets yet</p>
           )}
 
-          {tickets?.map((ticket: any, index: number) => (
+          {tickets?.map((ticket: Ticket, index: number) => (
             <div
-              key={nanoid()}
+              key={ticket.id}
               className="rounded-xl bg-white p-4 shadow transition hover:shadow-md"
             >
               {/* Index + Subject */}

@@ -12,6 +12,8 @@ export const authApi = baseApi.injectEndpoints({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         const { data } = await queryFulfilled;
         dispatch(setToken(data.accessToken));
+        // Clear cached queries from any previous session
+        dispatch(baseApi.util.resetApiState());
       },
     }),
 
@@ -24,6 +26,8 @@ export const authApi = baseApi.injectEndpoints({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         const { data } = await queryFulfilled;
         dispatch(setToken(data.accessToken));
+        // Clear cached queries from any previous session
+        dispatch(baseApi.util.resetApiState());
       },
     }),
 
@@ -33,8 +37,12 @@ export const authApi = baseApi.injectEndpoints({
         method: 'POST',
       }),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        await queryFulfilled;
-        dispatch(logout());
+        try {
+          await queryFulfilled;
+        } finally {
+          dispatch(logout());
+          dispatch(baseApi.util.resetApiState());
+        }
       },
     }),
   }),

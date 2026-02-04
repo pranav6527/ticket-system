@@ -9,7 +9,9 @@ import com.prod.backend.entity.UserEntity;
 import com.prod.backend.mapper.TicketMapper;
 import com.prod.backend.repo.TicketRepository;
 import com.prod.backend.repo.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -32,15 +34,16 @@ public class TicketService {
     }
 
     public List<TicketResponse> getTickets(Long loggedInUserId) {
-        List<TicketEntity> tickets = ticketRepository.findByUser_Id(loggedInUserId);
+        List<TicketEntity> tickets = ticketRepository.findByUser_IdOrderByCreatedAtDesc(loggedInUserId);
         return tickets.stream().map(ticketMapper::toDto).collect(Collectors.toList());
     }
 
     public List<TicketResponseForAdmin> getAllTickets() {
-        List<TicketEntity> tickets = ticketRepository.findAll();
+        List<TicketEntity> tickets = ticketRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
         return tickets.stream().map(ticketMapper::toDtoForAdmin).collect(Collectors.toList());
     }
 
+    @Transactional
     public TicketResponseForAdmin updateTicketAsAdmin(int ticketId, UpdateTicketRequest updateRequest) {
         TicketEntity ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new RuntimeException("Ticket not found"));

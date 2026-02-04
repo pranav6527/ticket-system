@@ -1,8 +1,15 @@
 import { baseApi } from '../../app/baseApi';
 
+export type Ticket = {
+  id: number;
+  subject: string;
+  status: string;
+  description: string;
+};
+
 export const ticketsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getTickets: builder.query<any[], void>({
+    getTickets: builder.query<Ticket[], void>({
       query: () => '/tickets',
       providesTags: ['Ticket'],
     }),
