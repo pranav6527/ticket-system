@@ -26,7 +26,6 @@ class AuthIntegrationTests {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
     @Test
     void signupReturnsAccessTokenAndRefreshCookie() throws Exception {
         String email = randomEmail();

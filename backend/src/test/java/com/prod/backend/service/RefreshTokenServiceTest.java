@@ -56,7 +56,7 @@ class RefreshTokenServiceTest {
 
     @Test
     void validateThrowsWhenTokenMissing() {
-        when(refreshTokenRepository.findByToken("missing"))
+        when(refreshTokenRepository.findByTokenWithUser("missing"))
                 .thenReturn(Optional.empty());
 
         assertThrows(RuntimeException.class, () -> refreshTokenService.validate("missing"));
@@ -68,7 +68,7 @@ class RefreshTokenServiceTest {
         entity.setToken("expired");
         entity.setExpiryDate(Instant.now().minusSeconds(10));
 
-        when(refreshTokenRepository.findByToken("expired"))
+        when(refreshTokenRepository.findByTokenWithUser("expired"))
                 .thenReturn(Optional.of(entity));
 
         assertThrows(RuntimeException.class, () -> refreshTokenService.validate("expired"));
