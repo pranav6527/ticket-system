@@ -59,7 +59,7 @@ class AuthServiceTest {
         user.setRole(Role.USER);
         when(userRepository.save(any(UserEntity.class))).thenReturn(user);
 
-        when(jwtUtility.generateToken(any(UserEntity.class))).thenReturn("access-token");
+        when(jwtUtility.generateToken(user)).thenReturn("access-token");
 
         RefreshTokenEntity refresh = new RefreshTokenEntity();
         refresh.setToken("refresh-token");
@@ -100,7 +100,7 @@ class AuthServiceTest {
 
         when(userRepository.findByEmail("user@example.com")).thenReturn(Optional.of(user));
         when(passwordEncoder.matches("Pass123!", "encoded")).thenReturn(true);
-        when(jwtUtility.generateToken(any(UserEntity.class))).thenReturn("access-token");
+        when(jwtUtility.generateToken(user)).thenReturn("access-token");
 
         RefreshTokenEntity refresh = new RefreshTokenEntity();
         refresh.setToken("refresh-token");
