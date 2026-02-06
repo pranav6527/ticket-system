@@ -4,7 +4,7 @@ module.exports = {
   transform: {
     '^.+\\.(ts|tsx)$': 'babel-jest',
   },
-  moduleFileExtensions: ['ts', 'tsx', 'js'],
-  transformIgnorePatterns: ['/node_modules/(?!(nanoid)/)'],
+  transformIgnorePatterns: ['/node_modules/(?!(nanoid|lucide-react)/)'],
+  testPathIgnorePatterns: ['/node_modules/', '<rootDir>/tests/e2e/'],
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
 };
