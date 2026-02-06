@@ -14,7 +14,13 @@
     "test": "jest --config ./jest.config.cjs",
     "test:watch": "jest --watch --config ./jest.config.cjs",
     "test:coverage": "jest --coverage --config ./jest.config.cjs",
-    "test:coverage:watch": "jest --watch --coverage --config ./jest.config.cjs"
+    "test:coverage:watch": "jest --watch --coverage --config ./jest.config.cjs",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:ui": "playwright test --ui --ui-host 127.0.0.1 --ui-port 9323",
+    "test:e2e:ui:headed": "playwright test --ui --headed --ui-host 127.0.0.1 --ui-port 9323",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:smoke:headed": "playwright test --headed --grep @smoke"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
@@ -34,6 +40,7 @@
     "@babel/preset-react": "^7.28.5",
     "@babel/preset-typescript": "^7.28.5",
     "@eslint/js": "^9.39.2",
+    "@playwright/test": "^1.50.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
     "@testing-library/user-event": "^14.6.1",
