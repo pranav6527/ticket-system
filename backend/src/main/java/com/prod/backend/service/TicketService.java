@@ -11,7 +11,6 @@ import com.prod.backend.repo.TicketRepository;
 import com.prod.backend.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -39,7 +38,7 @@ public class TicketService {
     }
 
     public List<TicketResponseForAdmin> getAllTickets() {
-        List<TicketEntity> tickets = ticketRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+        List<TicketEntity> tickets = ticketRepository.findAllByOrderByCreatedAtDesc();
         return tickets.stream().map(ticketMapper::toDtoForAdmin).collect(Collectors.toList());
     }
 

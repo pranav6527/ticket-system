@@ -6,26 +6,76 @@ import com.prod.backend.dto.TicketResponseForAdmin;
 import com.prod.backend.entity.TicketEntity;
 import com.prod.backend.entity.UserEntity;
 import com.prod.backend.enums.Status;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-@Mapper(componentModel = "spring", imports = {LocalDateTime.class, Status.class})
-public interface TicketMapper {
+@Component
+public class TicketMapper {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "subject", source = "dto.subject")
-    @Mapping(target = "description", source = "dto.description")
-    @Mapping(target = "user", source = "user")
-    @Mapping(target = "createdAt", expression = "java(LocalDateTime.now())")
-    @Mapping(target = "updatedAt", expression = "java(LocalDateTime.now())")
-    @Mapping(target = "status", expression = "java(Status.OPEN)")
-    TicketEntity toEntity(CreateTicketRequest dto, UserEntity user);
+    public TicketEntity toEntity(CreateTicketRequest dto, UserEntity user) {
+        if (dto == null && user == null) {
+            return null;
+        }
 
-    // Basic Response mapping
-    TicketResponse toDto(TicketEntity ticketEntity);
+        TicketEntity ticketEntity = new TicketEntity();
 
-    // Admin Response mapping with nested data
-    @Mapping(target = "userEmail", source = "user.email")
-    TicketResponseForAdmin toDtoForAdmin(TicketEntity ticketEntity);
+        if (dto != null) {
+            ticketEntity.setSubject(dto.subject());
+            ticketEntity.setDescription(dto.description());
+        }
+
+        ticketEntity.setUser(user);
+        ticketEntity.setCreatedAt(LocalDateTime.now());
+        ticketEntity.setUpdatedAt(LocalDateTime.now());
+        ticketEntity.setStatus(Status.OPEN);
+
+        return ticketEntity;
+    }
+
+    public TicketResponse toDto(TicketEntity ticketEntity) {
+        if (ticketEntity == null) {
+            return null;
+        }
+
+        return new TicketResponse(
+                ticketEntity.getId(),
+                ticketEntity.getSubject(),
+                ticketEntity.getStatus(),
+                ticketEntity.getDescription()
+        );
+    }
+
+    public TicketResponseForAdmin toDtoForAdmin(TicketEntity ticketEntity) {
+        if (ticketEntity == null) {
+            return null;
+        }
+
+        String createdAt = null;
+        if (ticketEntity.getCreatedAt() != null) {
+            createdAt = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(ticketEntity.getCreatedAt());
+        }
+
+        String updatedAt = null;
+        if (ticketEntity.getUpdatedAt() != null) {
+            updatedAt = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(ticketEntity.getUpdatedAt());
+        }
+
+        String userEmail = null;
+        UserEntity user = ticketEntity.getUser();
+        if (user != null) {
+            userEmail = user.getEmail();
+        }
+
+        return new TicketResponseForAdmin(
+                ticketEntity.getId(),
+                userEmail,
+                ticketEntity.getSubject(),
+                ticketEntity.getStatus(),
+                ticketEntity.getDescription(),
+                createdAt,
+                updatedAt
+        );
+    }
 }
