@@ -16,3 +16,7 @@ jwt:
   expiration: 900000
   refresh:
     expiration: 604800000
+
+admin:
+  email: admin@test.com
+  password: Admin123!

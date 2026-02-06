@@ -1,10 +1,9 @@
 package com.prod.backend.dto;
 
 import com.prod.backend.enums.Status;
-import lombok.Getter;
-import lombok.Setter;
 
 public record TicketResponseForAdmin(
+        int id,
         String userEmail,
         String subject,
         Status status,

@@ -44,7 +44,7 @@ public class RefreshTokenService {
        ========================= */
     public RefreshTokenEntity validate(String token) {
 
-        RefreshTokenEntity entity = refreshTokenRepository.findByToken(token)
+        RefreshTokenEntity entity = refreshTokenRepository.findByTokenWithUser(token)
                 .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
 
         if (entity.getExpiryDate().isBefore(Instant.now())) {

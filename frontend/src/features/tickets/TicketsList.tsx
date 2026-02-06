@@ -1,13 +1,22 @@
 import { useState } from 'react';
-import { useGetTicketsQuery, useCreateTicketMutation } from './ticketsApi';
+import { Link } from 'react-router-dom';
+import {
+  useGetTicketsQuery,
+  useCreateTicketMutation,
+  type Ticket,
+} from './ticketsApi';
 import { useLogoutMutation } from '../auth/authApi';
-import { nanoid } from 'nanoid';
 import { LogOut } from 'lucide-react'; // Added Lucide icon import
+import { useAppSelector } from '../../app/hooks';
+import { getJwtPayload } from '../auth/jwt';
 
 export default function TicketsList() {
   const { data: tickets, isLoading } = useGetTicketsQuery();
   const [createTicket, { isLoading: creating }] = useCreateTicketMutation();
   const [logout] = useLogoutMutation();
+  const token = useAppSelector((state) => state.auth.token);
+  const role = getJwtPayload(token)?.role;
+  const isAdmin = role === 'ADMIN';
 
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');
@@ -35,17 +44,28 @@ export default function TicketsList() {
         <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <h1 className="text-2xl font-semibold text-gray-800">My Tickets</h1>
 
-          {/* Responsive Red Logout Button */}
-          <button
-            onClick={handleLogout}
-            className="group flex w-full items-center justify-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-600 transition-all hover:bg-red-600 hover:text-white active:scale-95 sm:w-auto"
-          >
-            <LogOut
-              size={18}
-              className="transition-colors group-hover:text-white"
-            />
-            <span>Logout</span>
-          </button>
+          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
+            {isAdmin && (
+              <Link
+                to="/admin/tickets"
+                className="flex w-full items-center justify-center rounded-lg border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-100 sm:w-auto"
+              >
+                Admin Tickets
+              </Link>
+            )}
+
+            {/* Responsive Red Logout Button */}
+            <button
+              onClick={handleLogout}
+              className="group flex w-full items-center justify-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-600 transition-all hover:bg-red-600 hover:text-white active:scale-95 sm:w-auto"
+            >
+              <LogOut
+                size={18}
+                className="transition-colors group-hover:text-white"
+              />
+              <span>Logout</span>
+            </button>
+          </div>
         </div>
 
         {/* Create Ticket */}
@@ -88,9 +108,9 @@ export default function TicketsList() {
             <p className="text-center text-gray-500">No tickets yet</p>
           )}
 
-          {tickets?.map((ticket: any, index: number) => (
+          {tickets?.map((ticket: Ticket, index: number) => (
             <div
-              key={nanoid()}
+              key={ticket.id}
               className="rounded-xl bg-white p-4 shadow transition hover:shadow-md"
             >
               {/* Index + Subject */}
